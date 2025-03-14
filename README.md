@@ -1,9 +1,6 @@
 # ESNet: A Dual-Modal Joint Framework of Elemental Composition and Crystal Structure for Material Properties Prediction
 
 
-[[Code](https://github.com/divelab/AIRS)]
-
-
 ![cover](assets/architecture2.png)
 
 ## Dataset
