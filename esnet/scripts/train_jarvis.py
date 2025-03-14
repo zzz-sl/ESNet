@@ -38,4 +38,4 @@ props = [
 
 # train_prop_model(learning_rate=0.001, name="iComformer", criterion="mse", prop=props[0], pyg_input=True, n_epochs=700, max_neighbors=25, cutoff=4.0, batch_size=64, use_lattice=True, output_dir="/root/autodl-tmp/ComFormer/data", use_angle=True, save_dataloader=True)
 
-train_prop_model(learning_rate=0.001, name="iComformer", dataset_path="/root/autodl-tmp/graphs/jdft_3d-8-18-2021.json", prop=props[1], pyg_input=True, n_epochs=700, max_neighbors=25, cutoff=4.0, batch_size=64, use_lattice=True, output_dir="/root/autodl-tmp/results/jdft_eform", use_angle=True, save_dataloader=False, test_only=False)
+train_prop_model(learning_rate=0.001, name="iComformer", dataset_path="/yourpath/ESNet/data/jdft_3d_ehull.json", prop=props[27], pyg_input=True, n_epochs=500, max_neighbors=25, cutoff=4.0, batch_size=64, use_lattice=True, output_dir="/yourpath/ESNet/results/", use_angle=True, save_dataloader=False, test_only=False)

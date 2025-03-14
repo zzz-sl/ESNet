@@ -35,12 +35,12 @@ warnings.filterwarnings("ignore")
 # use pandas progress_apply
 tqdm.pandas()
 
-#device = "cpu"
-#if torch.cuda.is_available():
-#    device = torch.device("cuda")
+device = "cpu"
+if torch.cuda.is_available():
+   device = torch.device("cuda")
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '3'
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# os.environ['CUDA_VISIBLE_DEVICES'] = '3'
+# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def load_dataset(
@@ -204,7 +204,7 @@ def get_pyg_dataset(
     print("data range", np.max(vals), np.min(vals))
     # print(output_dir)
     # print('graphs not saved')
-    graphs_path = output_dir + "/" + tmp_name + "_graph_angle.pkl"
+    graphs_path = output_dir + "/" + tmp_name + "_graph_angle_ehull.pkl"
     if not os.path.exists(graphs_path):
         graphs = load_pyg_graphs(
             df,
