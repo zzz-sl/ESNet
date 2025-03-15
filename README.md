@@ -43,8 +43,22 @@ pip install einops
 python setup.py
 ```
 
-## Training
+## Demo
 
+1. Preparing the dataset
+```bash
+cd ESNet/data
+unzip jdft_3d_ehull.zip
+```
+
+2. Download esnet
+Go to the root of your ESNet project and run setup.py
+```bash
+cd ESNet
+python setup.py install
+```
+
+3. Execute the training script
 ```bash
 cd esnet/scripts
 python train_jarvis.py # for jarvis
