@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/root/autodl-tmp/ComFormer")
+sys.path.append("/yourpath/esnet")
 from esnet.train_props import train_prop_model
 props = [
     "e_form",
