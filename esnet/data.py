@@ -24,13 +24,13 @@ from jarvis.db.jsonutils import dumpjson
 import pickle as pk
 from sklearn.preprocessing import StandardScaler
 from pymatgen.core import Structure
-import warnings
+# import warnings
 
-from pymatgen.io.jarvis import JarvisAtomsAdaptor
+# from pymatgen.io.jarvis import JarvisAtomsAdaptor
 
-adaptor = JarvisAtomsAdaptor()
+# adaptor = JarvisAtomsAdaptor()
 
-warnings.filterwarnings("ignore")
+# warnings.filterwarnings("ignore")
 
 # use pandas progress_apply
 tqdm.pandas()
