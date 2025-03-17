@@ -7,7 +7,6 @@
 We propose a dual-modal joint framework - ESNet. Specifically, ESNet builds on existing models based on crystal structure graph, to provide an in-depth analysis of how material elemental composition and crystal structure work together to influence material properties. To obtain the elemental composition information from the compound, we pose the elemental knowledge graph embedding technique to obtain the useful knowledge. To capture key information and potential connections between the two modes of elemental composition and crystal structure, we use a content-directed attention mechanism to dynamically focus on important regions in both features.It is worth noting that, despite its simplicity, ESNet outperforms existing methods in various material property prediction tasks on the Materials Project and Jarvis datasets.
 
 ## System Requirements
-
 ### Hardware Requirements
 GPU ：Tesla V100S-PCIE-32GB, 1
 
