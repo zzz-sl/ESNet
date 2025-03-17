@@ -25,13 +25,9 @@ import pickle as pk
 from sklearn.preprocessing import StandardScaler
 from pymatgen.core import Structure
 # import warnings
-
 # from pymatgen.io.jarvis import JarvisAtomsAdaptor
-
 # adaptor = JarvisAtomsAdaptor()
-
 # warnings.filterwarnings("ignore")
-
 # use pandas progress_apply
 tqdm.pandas()
 
