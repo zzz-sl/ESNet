@@ -9,8 +9,11 @@ We propose a dual-modal joint framework - ESNet. Specifically, ESNet builds on e
 ## System Requirements
 
 ### Hardware Requirements
+GPU ：Tesla V100S-PCIE-32GB, 1
 
 ### Software Requirements
+Development version is tested on Linux operating systems.
+Linux：Ubuntu 22.04
 
 ## Dataset
 
