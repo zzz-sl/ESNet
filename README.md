@@ -62,6 +62,7 @@ python setup.py install
 
 3. Modifying the path
 Change the project path to your local execution path as follows:
+
 （1）Modify data.py
 ```bash
 cd esnet/
