@@ -3,6 +3,15 @@
 
 ![cover](assets/architecture2.png)
 
+## Overview
+We propose a dual-modal joint framework - ESNet. Specifically, ESNet builds on existing models based on crystal structure graph, to provide an in-depth analysis of how material elemental composition and crystal structure work together to influence material properties. To obtain the elemental composition information from the compound, we pose the elemental knowledge graph embedding technique to obtain the useful knowledge. To capture key information and potential connections between the two modes of elemental composition and crystal structure, we use a content-directed attention mechanism to dynamically focus on important regions in both features.It is worth noting that, despite its simplicity, ESNet outperforms existing methods in various material property prediction tasks on the Materials Project and Jarvis datasets.
+
+## System Requirements
+
+### Hardware Requirements
+
+### Software Requirements
+
 ## Dataset
 
 ### The Materials Project Dataset
@@ -26,10 +35,8 @@ JARVIS is a newly released database proposed by Choudhary et al.. For JARVIS dat
 ## Enviroment
 
 ```bash
-conda create --name esnet python=3.10
+conda create -n esnet python=3.10
 conda activate esnet
-conda install pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia # or higher version if you want
-conda install pyg -c pyg
 pip install torch==2.1.0
 pip install torch_geometric
 pip install pandarallel
