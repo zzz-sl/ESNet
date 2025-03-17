@@ -11,7 +11,8 @@ We propose a dual-modal joint framework - ESNet. Specifically, ESNet builds on e
 GPU ：Tesla V100S-PCIE-32GB, 1
 
 ### Software Requirements
-Development version is tested on Linux operating systems.
+Development version is tested on Linux operating systems. 
+
 Linux：Ubuntu 22.04
 
 ## Dataset
@@ -26,30 +27,22 @@ For bulk and shear datasets, the datasets are avaliable at https://figshare.com/
 JARVIS is a newly released database proposed by Choudhary et al.. For JARVIS dataset, we follow ALIGNN and use the same training, validation, and test set. We evaluate our ComFormer on five important crystal property tasks, including formation energy, bandgap(OPT), bandgap(MBJ), total energy, and Ehull. The training, validation, and test set contains 44578, 5572, and 5572 crystals for tasks of formation energy, total energy, and bandgap(OPT). The numbers are 44296, 5537, 5537 for Ehull, and 14537, 1817, 1817 for bandgap(MBJ). The used metric is test MAE. 
 
 
-## Benchmarked results
-
-### The Materials Project Dataset
-![cover](assets/MP.png)
-### JARVIS dataset
-![cover](assets/Jarvis.png)
-
-
 ## Enviroment
 
 ```bash
 conda create -n esnet python=3.10
 conda activate esnet
 pip install torch==2.1.0
-pip install torch_geometric
+pip install torch_sparse -f https://data.pyg.org/whl/torch-2.1.0+cu121.html
+pip install torch_geometric -f https://data.pyg.org/whl/torch-2.1.0+cu121.html
+pip install torch_scatter -f https://data.pyg.org/whl/torch-2.1.0+cu121.html
 pip install pandarallel
 pip install pydantic_settings
-pip install torch_scatter
 pip install e3nn
-pip install torch_sparse
 pip install numpy==1.26.4
 pip install jarvis-tools==2022.9.16
 pip install einops
-python setup.py
+pip install pymatgen
 ```
 
 ## Demo
@@ -67,12 +60,52 @@ cd ESNet
 python setup.py install
 ```
 
-3. Execute the training script
+3. Modifying the path
+Change the project path to your local execution path as follows:
+（1）Modify data.py
+```bash
+cd esnet/
+vim data.py
+kgembedding_path = "/yourpath/ESNet/graphs/RotatE_128_64.pkl"
+```
+（2）Modify graphs.py
+```bash
+cd esnet/
+vim graphs.py
+with open("/yourpath/ESNet/graphs/atom_init.json", "r") as f  # line 146 and line 276 
+```
+
+（3）Modify load_triples.py
+```bash
+cd esnet/
+vim load_triples.py
+data_dir="/yourpath/ESNet/graphs/triples.txt" 
+```
+
+(4) If you want to reproduce based on the weights we provided, you'll need to modify train.py:
+```bash
+cd esnet/
+vim train.py
+checkpoint_tmp = torch.load('/yourpath/ESNet/checkpoints/checkpoint_ehull_500.pt')
+```
+
+4. Execute the training script
+Make sure to change the path to your own local execution path.
 ```bash
 cd esnet/scripts
 python train_jarvis.py # for jarvis
 python train_mp.py # for the materials project
 ```
+
+
+## Results
+
+### The Materials Project Dataset
+![cover](assets/MP.png)
+### JARVIS dataset
+![cover](assets/Jarvis.png)
+
+
 
 ## Acknowledgement
 

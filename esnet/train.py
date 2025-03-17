@@ -51,12 +51,12 @@ import os
 # torch config
 torch.set_default_dtype(torch.float32)
 
-#device = "cpu"
-#if torch.cuda.is_available():
-#    device = torch.device("cuda")
+device = "cpu"
+if torch.cuda.is_available():
+   device = torch.device("cuda")
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '3'
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# os.environ['CUDA_VISIBLE_DEVICES'] = '3'
+# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class PolynomialLRDecay(torch.optim.lr_scheduler._LRScheduler):
     def __init__(self, optimizer, max_iters, start_lr, end_lr, power=1, last_epoch=-1):
