@@ -107,7 +107,6 @@ python train_mp.py # for the materials project
 ![cover](assets/Jarvis.png)
 
 
-
 ## Acknowledgement
 
 This work was supported by the "Kechuang Yongjiang 2035" key technology breakthrough plan of Zhejiang Ningbo((grant nos. 2024Z119).
