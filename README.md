@@ -15,6 +15,8 @@ Development version is tested on Linux operating systems.
 
 Linux：Ubuntu 22.04
 
+CUDA version: 11.8 or 12.4
+
 ## Dataset
 
 ### The Materials Project Dataset
