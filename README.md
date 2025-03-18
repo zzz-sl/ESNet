@@ -45,6 +45,8 @@ pip install numpy==1.26.4
 pip install jarvis-tools==2022.9.16
 pip install einops
 pip install pymatgen
+pip install pytorch-ignite
+pip install scikit-learn
 ```
 
 ## Demo
