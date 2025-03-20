@@ -52,10 +52,10 @@ pip install scikit-learn
 ## Demo
 
 1. Preparing the dataset
-```bash
-cd ESNet/data
-unzip jdft_3d_ehull.zip
-```
+
+Megnet dataset download: https://ndownloader.figshare.com/files/26724977
+
+Bulk and Shear datasets download: https://figshare.com/projects/Bulk_and_shear_datasets/165430
 
 2. Download esnet
 Go to the root of your ESNet project and run setup.py
@@ -73,6 +73,13 @@ cd esnet/
 vim data.py
 kgembedding_path = "/yourpath/ESNet/graphs/RotatE_128_64.pkl"
 ```
+
+For the bulk modulus and shear modulus data sets, modify the corresponding paths, for example:
+```bash
+ with open('/yourpath/ESNet/data/bulk_megnet_train.pkl', 'rb') as f # line 457-470
+```
+
+
 （2）Modify graphs.py
 ```bash
 cd esnet/
@@ -87,21 +94,28 @@ vim load_triples.py
 data_dir="/yourpath/ESNet/graphs/triples.txt" 
 ```
 
-(4) If you want to reproduce based on the weights we provided, you'll need to modify train.py:
+(4) If you want to reproduce based on the weights we provided(currently only bulk modulus weights are provided), you'll need to modify train.py:
 ```bash
 cd esnet/
 vim train.py
-checkpoint_tmp = torch.load('/yourpath/ESNet/checkpoints/checkpoint_ehull_500.pt')
+checkpoint_tmp = torch.load('/yourpath/ESNet/checkpoints/checkpoint_500.pt') # bulk modulus checkpoint
 ```
 
 4. Execute the training script
 Make sure to change the path to your own local execution path.
 ```bash
 cd esnet/scripts
-python train_jarvis.py # for jarvis
-python train_mp.py # for the materials project
+vim train_mp.py
 ```
-
+The changes are as follows:
+```bash
+dataset_path="/yourpath/ESNet/data/megnet.json"
+output_dir="/yourpath/ESNet/results"
+```
+Execute the script:
+```bash
+python train_mp.py
+```
 
 ## Results
 

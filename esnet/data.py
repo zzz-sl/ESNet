@@ -200,7 +200,7 @@ def get_pyg_dataset(
     print("data range", np.max(vals), np.min(vals))
     # print(output_dir)
     # print('graphs not saved')
-    graphs_path = output_dir + "/" + tmp_name + "_graph_angle_ehull.pkl"
+    graphs_path = output_dir + "/" + tmp_name + "_graph_angle.pkl"
     if not os.path.exists(graphs_path):
         graphs = load_pyg_graphs(
             df,
@@ -454,20 +454,20 @@ def get_train_val_loaders(
     if mp_id_list is not None:
         if mp_id_list == 'bulk':
             print('using mp bulk dataset')
-            with open('/home/nbuser/SL/ESNet/graphs/bulk_megnet_train.pkl', 'rb') as f:
+            with open('/yourpath/ESNet/data/bulk_megnet_train.pkl', 'rb') as f:
                 dataset_train = pk.load(f)
-            with open('/home/nbuser/SL/ESNet/graphs/bulk_megnet_val.pkl', 'rb') as f:
+            with open('/yourpath/ESNet/data/bulk_megnet_val.pkl', 'rb') as f:
                 dataset_val = pk.load(f)
-            with open('/home/nbuser/SL/ESNet/graphs/bulk_megnet_test.pkl', 'rb') as f:
+            with open('/yourpath/ESNet/data/bulk_megnet_test.pkl', 'rb') as f:
                 dataset_test = pk.load(f)
         
         if mp_id_list == 'shear':
             print('using mp shear dataset')
-            with open('/home/nbuser/SL/ESNet/graphs/shear_megnet_train.pkl', 'rb') as f:
+            with open('/yourpath/ESNet/data/shear_megnet_train.pkl', 'rb') as f:
                 dataset_train = pk.load(f)
-            with open('/home/nbuser/SL/ESNet/graphs/shear_megnet_val.pkl', 'rb') as f:
+            with open('/yourpath/ESNet/data/shear_megnet_val.pkl', 'rb') as f:
                 dataset_val = pk.load(f)
-            with open('/home/nbuser/SL/ESNet/graphs/shear_megnet_test.pkl', 'rb') as f:
+            with open('/yourpath/ESNet/data/shear_megnet_test.pkl', 'rb') as f:
                 dataset_test = pk.load(f)
 
     else:
