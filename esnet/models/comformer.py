@@ -19,7 +19,7 @@ class iComformerConfig(BaseSettings):
     """Hyperparameter schema for jarvisdgl.models.cgcnn."""
 
     name: Literal["iComformer"]
-    conv_layers: int = 3
+    conv_layers: int = 4
     edge_layers: int = 1
     atom_input_features: int = 70
     kge_input_features: int = 128
@@ -373,7 +373,7 @@ class iComformer(nn.Module):  # iComFormer
         edge_features = self.edge_update_layer(edge_features, edge_nei_len, edge_nei_angle)
         node_features = self.att_layers[1](node_features, data.edge_index, edge_features)
         node_features = self.att_layers[2](node_features, data.edge_index, edge_features)
-        # node_features = self.att_layers[3](node_features, data.edge_index, edge_features)
+        node_features = self.att_layers[3](node_features, data.edge_index, edge_features)
 
         # crystal-level readout
         graph_features = scatter(node_features, data.batch, dim=0, reduce="mean") # 使用均值聚合节点特征
