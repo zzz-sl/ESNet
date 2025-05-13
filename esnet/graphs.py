@@ -117,7 +117,7 @@ class PygStructureDataset(torch.utils.data.Dataset):
 
         self.transform = transform
 
-        features = self._get_attribute_lookup(atom_features)
+        features = self.get_attribute_lookup(atom_features)
 
         # load selected node representation
         # assume graphs contain atomic number in g.ndata["atom_features"]
@@ -136,7 +136,7 @@ class PygStructureDataset(torch.utils.data.Dataset):
         
 
     @staticmethod
-    def _get_attribute_lookup(atom_features: str = "cgcnn"):
+    def get_attribute_lookup(atom_features: str = "cgcnn"):
         """Build a lookup array indexed by atomic number."""
         max_z = max(v["Z"] for v in chem_data.values())
 
@@ -246,7 +246,7 @@ class PygKnowledgeAndStructureDataset(torch.utils.data.Dataset):
 
         self.kge_features = load_pyq_knowledge(df, kges)
 
-        features = self._get_attribute_lookup(atom_features)
+        features = self.get_attribute_lookup(atom_features)
 
         # load selected node representation
         # assume graphs contain atomic number in g.ndata["atom_features"]
@@ -266,7 +266,7 @@ class PygKnowledgeAndStructureDataset(torch.utils.data.Dataset):
             self.prepare_batch = prepare_pyg_line_graph_batch
 
     @staticmethod
-    def _get_attribute_lookup(atom_features: str = "cgcnn"):
+    def get_attribute_lookup(atom_features: str = "cgcnn"):
         """Build a lookup array indexed by atomic number."""
         max_z = max(v["Z"] for v in chem_data.values())
 
