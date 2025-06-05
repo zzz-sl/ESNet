@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/yourpath/esnet")
+sys.path.append("D:/code/material/ESNet/esnet")
 from esnet.train_props import train_prop_model
 props = [
     "e_form",
@@ -10,7 +10,7 @@ props = [
 train_prop_model(learning_rate=0.0001,
                  name="iComformer",
                  dataset="megnet",
-                 dataset_path="/home/nbuser/SL/ESNet/graphs/megnet.json",
+                 dataset_path="../../graphs/megnet.json",
                  prop=props[0],
                  pyg_input=True,
                  n_epochs=500,
@@ -18,7 +18,7 @@ train_prop_model(learning_rate=0.0001,
                  cutoff=4.0,
                  batch_size=64,
                  use_lattice=True,
-                 output_dir="/home/nbuser/SL/results",
+                 output_dir="../../test",
                  use_angle=True,
                  file_name="bulk",
                  mp_id_list="bulk",

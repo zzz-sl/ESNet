@@ -5,7 +5,7 @@ from collections import defaultdict as ddict
 
 class Triples:
 
-    def __init__(self, data_dir="/home/nbuser/SL/ESNet/graphs/triples.txt"):
+    def __init__(self, data_dir="../graphs/triples.txt"):
         self.data = self.load_data(data_dir)
         self.entities, self.entity2id = self.get_entities(self.data)
         self.attributes, self.attribute2id = self.get_attributes(self.data)

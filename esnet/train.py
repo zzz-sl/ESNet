@@ -337,7 +337,7 @@ def train_main(
         device=device,
     )
     if test_only:
-        checkpoint_tmp = torch.load('/yourpath/ESNet/checkpoints/checkpoint_500.pt')
+        checkpoint_tmp = torch.load('../checkpoints/checkpoint_500.pt')
         # checkpoint_tmp = torch.load('/root/autodl-tmp/ComFormer/data/best_model.pt')
         to_load = {
             "model": net,

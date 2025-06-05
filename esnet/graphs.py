@@ -143,7 +143,7 @@ class PygStructureDataset(torch.utils.data.Dataset):
         # get feature shape (referencing Carbon)
         # template = get_node_attributes("C", atom_features)
         template_key = str(Specie("C").element_property("Z"))
-        with open("/home/nbuser/SL/ESNet/graphs/atom_init.json", "r") as f:
+        with open("../graphs/atom_init.json", "r") as f:
             atom_init = json.load(f)
         template = atom_init[template_key]
 
@@ -273,7 +273,7 @@ class PygKnowledgeAndStructureDataset(torch.utils.data.Dataset):
         # get feature shape (referencing Carbon)
         # template = get_node_attributes("C", atom_features)
         template_key = str(Specie("C").element_property("Z"))
-        with open("/home/nbuser/SL/ESNet/graphs/atom_init.json", "r") as f:
+        with open("../graphs/atom_init.json", "r") as f:
             atom_init = json.load(f)
         template = atom_init[template_key]
 

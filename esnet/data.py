@@ -222,7 +222,7 @@ def get_pyg_dataset(
 
     # KG Embedding
     # kgembedding_path = r"/root/autodl-tmp/graphs/ele2emb.pkl"
-    kgembedding_path = "/home/nbuser/SL/ESNet/graphs/RotatE_128_64.pkl"
+    kgembedding_path = "../graphs/RotatE_128_64.pkl"
     print('loading KGE from ', kgembedding_path)
     ele2emb = pk.load(open(kgembedding_path, 'rb'))
     if mean_train == None:
@@ -454,20 +454,20 @@ def get_train_val_loaders(
     if mp_id_list is not None:
         if mp_id_list == 'bulk':
             print('using mp bulk dataset')
-            with open('/yourpath/ESNet/data/bulk_megnet_train.pkl', 'rb') as f:
+            with open('../data/bulk_megnet_train.pkl', 'rb') as f:
                 dataset_train = pk.load(f)
-            with open('/yourpath/ESNet/data/bulk_megnet_val.pkl', 'rb') as f:
+            with open('../data/bulk_megnet_val.pkl', 'rb') as f:
                 dataset_val = pk.load(f)
-            with open('/yourpath/ESNet/data/bulk_megnet_test.pkl', 'rb') as f:
+            with open('../data/bulk_megnet_test.pkl', 'rb') as f:
                 dataset_test = pk.load(f)
         
         if mp_id_list == 'shear':
             print('using mp shear dataset')
-            with open('/yourpath/ESNet/data/shear_megnet_train.pkl', 'rb') as f:
+            with open('../data/shear_megnet_train.pkl', 'rb') as f:
                 dataset_train = pk.load(f)
-            with open('/yourpath/ESNet/data/shear_megnet_val.pkl', 'rb') as f:
+            with open('../data/shear_megnet_val.pkl', 'rb') as f:
                 dataset_val = pk.load(f)
-            with open('/yourpath/ESNet/data/shear_megnet_test.pkl', 'rb') as f:
+            with open('../data/shear_megnet_test.pkl', 'rb') as f:
                 dataset_test = pk.load(f)
 
     else:
