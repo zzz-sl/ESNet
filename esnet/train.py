@@ -1,3 +1,7 @@
+import os
+
+
+
 from functools import partial
 
 # from pathlib import Path
@@ -37,7 +41,7 @@ from ignite.handlers import Checkpoint, DiskSaver, TerminateOnNan
 from ignite.metrics import Loss, MeanAbsoluteError
 from torch import nn
 from esnet import models
-from esnet.data import get_train_val_loaders
+from esnet.data import get_train_val_loaders, get_MatBench_test_loaders
 from esnet.config import TrainingConfig
 from esnet.models.comformer import iComformer, eComformer
 
@@ -45,18 +49,17 @@ from jarvis.db.jsonutils import dumpjson
 import json
 import pprint
 
-import os
 
 
 # torch config
 torch.set_default_dtype(torch.float32)
 
-device = "cpu"
-if torch.cuda.is_available():
-   device = torch.device("cuda")
+# device = "cpu"
+# if torch.cuda.is_available():
+#    device = torch.device("cuda")
 
-# os.environ['CUDA_VISIBLE_DEVICES'] = '3'
-# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+os.environ['CUDA_VISIBLE_DEVICES'] = '3'
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class PolynomialLRDecay(torch.optim.lr_scheduler._LRScheduler):
     def __init__(self, optimizer, max_iters, start_lr, end_lr, power=1, last_epoch=-1):
@@ -199,6 +202,7 @@ def train_main(
             prepare_batch,
             mean_train,
             std_train,
+            collate_fn,
         ) = get_train_val_loaders(
             dataset=config.dataset,
             dataset_path=dataset_path,
@@ -240,6 +244,18 @@ def train_main(
         val_loader = train_val_test_loaders[1]
         test_loader = train_val_test_loaders[2]
         prepare_batch = train_val_test_loaders[3]
+    
+    MatBench_loader = get_MatBench_test_loaders(config, line_graph, mean_train, std_train, collate_fn)
+
+    # for data in train_loader:
+    #     import pdb; pdb.set_trace()
+    #     break
+    #     cc = 1
+
+    # for data in MatBench_loader:
+    #     import pdb; pdb.set_trace()
+    #     cc = 1
+
     prepare_batch = partial(prepare_batch, device=device)
     if classification:
         config.model.classification = True
@@ -330,6 +346,12 @@ def train_main(
         prepare_batch=prepare_batch,
         device=device,
     )
+    MatBench_evaluator = create_supervised_evaluator(
+        net,
+        metrics=metrics,
+        prepare_batch=prepare_batch,
+        device=device,
+    )
     train_evaluator = create_supervised_evaluator(
         net,
         metrics=metrics,
@@ -337,7 +359,7 @@ def train_main(
         device=device,
     )
     if test_only:
-        checkpoint_tmp = torch.load('../checkpoints/checkpoint_500.pt')
+        checkpoint_tmp = torch.load('/mnt/public/bleschen/code/ESNet/checkpoints/checkpoint_500.pt')
         # checkpoint_tmp = torch.load('/root/autodl-tmp/ComFormer/data/best_model.pt')
         to_load = {
             "model": net,
@@ -416,6 +438,7 @@ def train_main(
     history = {
         "train": {m: [] for m in metrics.keys()},
         "validation": {m: [] for m in metrics.keys()},
+        "matbench": {m: [] for m in metrics.keys()},
     }
 
     if config.store_outputs:
@@ -442,7 +465,19 @@ def train_main(
 
             history["validation"][metric].append(vm)
 
+
+        MatBench_evaluator.run(MatBench_loader)
         
+        mb_metrics = MatBench_evaluator.state.metrics
+        for metric in mb_metrics.keys():
+            mbm = mb_metrics[metric]
+            if metric == "roccurve":
+                mbm = [k.tolist() for k in mbm]
+            if isinstance(mbm, torch.Tensor):
+                mbm = mbm.cpu().numpy().tolist()
+
+            history["matbench"][metric].append(mbm)
+
         
         epoch_num = len(history["validation"][t_metric])
         if epoch_num % 20 == 0:
@@ -475,9 +510,11 @@ def train_main(
             pbar = ProgressBar()
             if not classification:
                 pbar.log_message(f"Val_MAE: {vmetrics['mae']:.4f}")
+                pbar.log_message(f"MatBench_MAE: {mb_metrics['mae']:.4f}")
                 pbar.log_message(f"Train_MAE: {tmetrics['mae']:.4f}")
             else:
                 pbar.log_message(f"Train ROC AUC: {tmetrics['rocauc']:.4f}")
+                pbar.log_message(f"MatBench ROC: {mb_metrics['rocauc']:.4f}")
                 pbar.log_message(f"Val ROC AUC: {vmetrics['rocauc']:.4f}")
 
     if config.n_early_stopping is not None:

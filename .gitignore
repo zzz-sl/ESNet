@@ -181,7 +181,7 @@ data/
 data/*
 wandb/
 wandb/*
-mptrj/
-mptrj/*
+graphs/
+graphs/*
 checkpoints/
 checkpoints/*

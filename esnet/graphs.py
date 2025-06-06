@@ -143,7 +143,7 @@ class PygStructureDataset(torch.utils.data.Dataset):
         # get feature shape (referencing Carbon)
         # template = get_node_attributes("C", atom_features)
         template_key = str(Specie("C").element_property("Z"))
-        with open("../graphs/atom_init.json", "r") as f:
+        with open("/mnt/public/bleschen/code/ESNet/graphs/atom_init.json", "r") as f:
             atom_init = json.load(f)
         template = atom_init[template_key]
 
@@ -233,14 +233,14 @@ class PygKnowledgeAndStructureDataset(torch.utils.data.Dataset):
             torch.get_default_dtype()
         )
         print("mean %f std %f" % (self.labels.mean(), self.labels.std()))
-        if mean_train == None:
-            mean = self.labels.mean()
-            std = self.labels.std()
-            self.labels = (self.labels - mean) / std
-            print("normalize using training mean but shall not be used here %f and std %f" % (mean, std))
-        else:
-            self.labels = (self.labels - mean_train) / std_train
-            print("normalize using training mean %f and std %f" % (mean_train, std_train))
+        # if mean_train == None:
+        #     mean = self.labels.mean()
+        #     std = self.labels.std()
+        #     self.labels = (self.labels - mean) / std
+        #     print("normalize using training mean but shall not be used here %f and std %f" % (mean, std))
+        # else:
+        #     self.labels = (self.labels - mean_train) / std_train
+        #     print("normalize using training mean %f and std %f" % (mean_train, std_train))
 
         self.transform = transform
 
@@ -273,7 +273,7 @@ class PygKnowledgeAndStructureDataset(torch.utils.data.Dataset):
         # get feature shape (referencing Carbon)
         # template = get_node_attributes("C", atom_features)
         template_key = str(Specie("C").element_property("Z"))
-        with open("../graphs/atom_init.json", "r") as f:
+        with open("/mnt/public/bleschen/code/ESNet/graphs/atom_init.json", "r") as f:
             atom_init = json.load(f)
         template = atom_init[template_key]
 

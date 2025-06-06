@@ -67,8 +67,8 @@ def train_prop_model(
         "batch_size": batch_size,
         "weight_decay": 1e-05,
         "learning_rate": learning_rate,
-        #"criterion": "mse",
-        "criterion": "l1",
+        "criterion": "mse",
+        # "criterion": "l1",
         "optimizer": "adamw",
         "scheduler": scheduler,
         "save_dataloader": save_dataloader,
@@ -149,11 +149,11 @@ def train_prop_model(
             config["n_test"] = 393
 
         #config["id_tag"] = "material_id"
-        #if prop == "formation_energy_per_atom" or prop == "band_gap":
-            #config["n_train"] = 121398
-            #config["n_val"] = 15175
-            #config["n_test"] = 15175
-            #config["num_workers"] = 8
+        if prop == "formation_energy_per_atom" or prop == "band_gap":
+            config["n_train"] = 2000
+            config["n_val"] = 2000
+            config["n_test"] = 2000
+            config["num_workers"] = 8
     
     if dataset == 'mpf':
         config["id_tag"] = "id"
@@ -176,6 +176,7 @@ def train_prop_model(
         t2 = time.time()
         print("train=", result["train"])
         print("validation=", result["validation"])
+        print("MatBench=", result["matbench"])
         print("Toal time:", t2 - t1)
         print()
         print()

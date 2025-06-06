@@ -8,6 +8,7 @@ from typing import Optional
 # from typing import Dict, List, Optional, Set, Tuple
 
 import os
+import json
 import torch
 import numpy as np
 import pandas as pd
@@ -222,7 +223,7 @@ def get_pyg_dataset(
 
     # KG Embedding
     # kgembedding_path = r"/root/autodl-tmp/graphs/ele2emb.pkl"
-    kgembedding_path = "../graphs/RotatE_128_64.pkl"
+    kgembedding_path = "/mnt/public/bleschen/code/ESNet/graphs/RotatE_128_64.pkl"
     print('loading KGE from ', kgembedding_path)
     ele2emb = pk.load(open(kgembedding_path, 'rb'))
     if mean_train == None:
@@ -294,7 +295,7 @@ def get_train_val_loaders(
     dataset: str = "dft_3d",
     dataset_array=[],
     dataset_path = ".",
-    target: str = "formation_energy_peratom",
+    target: str = "formation_energy_per_atom",
     atom_features: str = "cgcnn",
     neighbor_strategy: str = "k-nearest",
     n_train=None,
@@ -454,20 +455,20 @@ def get_train_val_loaders(
     if mp_id_list is not None:
         if mp_id_list == 'bulk':
             print('using mp bulk dataset')
-            with open('../data/bulk_megnet_train.pkl', 'rb') as f:
+            with open('/mnt/public/bleschen/code/ESNet/data/bulk_megnet_train.pkl', 'rb') as f:
                 dataset_train = pk.load(f)
-            with open('../data/bulk_megnet_val.pkl', 'rb') as f:
+            with open('/mnt/public/bleschen/code/ESNet/data/bulk_megnet_val.pkl', 'rb') as f:
                 dataset_val = pk.load(f)
-            with open('../data/bulk_megnet_test.pkl', 'rb') as f:
+            with open('/mnt/public/bleschen/code/ESNet/data/bulk_megnet_test.pkl', 'rb') as f:
                 dataset_test = pk.load(f)
         
         if mp_id_list == 'shear':
             print('using mp shear dataset')
-            with open('../data/shear_megnet_train.pkl', 'rb') as f:
+            with open('/mnt/public/bleschen/code/ESNet/data/shear_megnet_train.pkl', 'rb') as f:
                 dataset_train = pk.load(f)
-            with open('../data/shear_megnet_val.pkl', 'rb') as f:
+            with open('/mnt/public/bleschen/code/ESNet/data/shear_megnet_val.pkl', 'rb') as f:
                 dataset_val = pk.load(f)
-            with open('../data/shear_megnet_test.pkl', 'rb') as f:
+            with open('/mnt/public/bleschen/code/ESNet/data/shear_megnet_test.pkl', 'rb') as f:
                 dataset_test = pk.load(f)
 
     else:
@@ -604,5 +605,70 @@ def get_train_val_loaders(
         train_loader.dataset.prepare_batch,
         mean_train,
         std_train,
+        collate_fn
     )
     
+
+def get_MatBench_test_loaders(config, line_graph, mean_train, std_train, collate_fn, 
+        batch_size: int = 5,
+        workers: int = 0,
+        pin_memory: bool = True
+    ):
+    with open('/mnt/public/bleschen/code/ESNet/graphs/wbm-5000.json', 'r') as f:
+        wbm = json.load(f)
+
+    df = pd.DataFrame(wbm)
+
+    kgembedding_path = "/mnt/public/bleschen/code/ESNet/graphs/RotatE_128_64.pkl"
+    print('loading KGE from ', kgembedding_path)
+    with open(kgembedding_path, "rb") as f:
+        ele2emb = pk.load(f)
+
+    with open("/mnt/public/bleschen/code/ESNet/graphs/wbm_graph_angle.pkl", "rb") as f:
+        graphs = pk.load(f)
+    #     graph_dict = pk.load(f)
+    
+    # graphs = []
+    # for entry in tqdm(
+    #         wbm,  # 直接遍历列表
+    #         total=len(wbm),  # 设置总数为列表长度
+    #         # desc=f"Predicting {target_col=} {task_type}",
+    # ):
+    #     material_id = entry["id"]
+    #     # atoms = entry["atoms"]
+    #     # elements = atoms["elements"]
+
+    #     g = graph_dict[material_id]
+    #     graphs.append(g.cpu())
+
+    # import pdb; pdb.set_trace()
+    graphs = [x.cpu() for x in graphs]
+
+    print('loading KGE !!!')
+    data = PygKnowledgeAndStructureDataset(
+            df,
+            graphs,
+            ele2emb,
+            target="e_form_per_atom_mp2020_corrected",
+            atom_features=config.atom_features,
+            line_graph=line_graph,
+            id_tag=config.id_tag,
+            classification=config.classification_threshold is not None,
+            neighbor_strategy=config.neighbor_strategy,
+            mean_train=mean_train,
+            std_train=std_train,
+        )
+
+        
+    val_loader = DataLoader(
+        data,
+        batch_size=batch_size,
+        shuffle=False,
+        collate_fn=collate_fn,
+        drop_last=True,
+        num_workers=workers,
+        pin_memory=pin_memory,
+    )
+
+    return val_loader
+
